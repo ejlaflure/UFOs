@@ -22,22 +22,61 @@ function buildTable(data) {
     });
 };
 
-// Function for creating a couple of variables to hold the date data, both filtered and unfiltered.
-function handleClick() {
-    // Grab the datetime value from the filter
-    let date = d3.select("#datetime").property("value");
-    let filteredData = tableData;
-    // Check to see if a date was entered and filter the and filter the data using that date.
-    if (date) {
-        // Apply `filter` to the table data, only keeping the rows where the `datetime` value matches the filter value.
-        filteredData = filteredData.filter(row => row.datetime === date);
+// Keep track of all filters
+let filters = {};
+
+// Function for pulling key and values for filters 
+function handleChange() {
+    // Select the input bars that contain a filter input
+    let inputedElement = d3.select(this);
+    // Grab the value of the input and trim it so spaces don't affect the function
+    let filterValue = inputedElement.property("value").trim();
+    // Grab the id key of the input
+    let filterId = inputedElement.attr("id");
+    // Print in console to confirm if the correct values and keys are being pulled
+    console.log(filterValue, filterId);
+    // Add input values to filters or delete old values if no new inputs are avaliable
+    if (filterValue) {
+        filters[filterId] = filterValue
+    }
+    else {
+        delete filters[filterId]
     };
-    // Rebuild the table using the filtered data
+    // Print filters to confirm if/else statment functioned correctly
+    console.log(filters);
+    // Run filterTable function
+    filterTable();
+};
+
+// Function for applying filters 
+function filterTable() {
+    // Set the filteredData to the tableData
+    let filteredData = tableData;
+    // Loop through all of the filters and keep any data that matches the filter values
+    // print values to ensure they were assigned from the filter variable correctly
+    Object.entries(filters).forEach(([key, value]) => {
+        console.log(value);
+        filteredData = filteredData.filter(row => row[key] === value);
+    });
+    // Rebuild the table using the filtered Data
     buildTable(filteredData);
 };
 
-// code tied to filter button in HTML
-d3.selectAll("#filter-btn").on("click", handleClick);
+// Fuction for clearing the filters
+function clearFilters() {
+    // Select all input bars and set them to an empty string
+    d3.selectAll("input").property("value", "");
+    // Set filters variable to an empty object
+    filters = {};
+    // Build original table
+    buildTable(tableData);
+};
+
+// Event listening for changes to each filter's input bar
+d3.selectAll("input").on("change", handleChange);
+
+// Event tied to clear filters button in HTML
+d3.selectAll("#filter-btn").on("click", clearFilters);
 
 // Build the table when the page loads
 buildTable(tableData);
