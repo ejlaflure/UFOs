@@ -11,4 +11,5 @@ Building a table using data stored in a JavaScript array, creating filters to ma
 - In this challenge, 5 filter inputs were added to the HTML and the event listener in JavaScript was set to apply the input extraction, data filtering and recreation of the table each time an input is submitted. To allow a more streamlined way to clear the filters and return the table to original state, I recommend adding a clear filters button bellow the inputs. Below is the D3 event listener that connects to the HTML and the function required to clear the filter inputs, filter variable and return the table to its original form.
 
 ![clear_button_listener](https://github.com/ejlaflure/UFOs/blob/master/static/images/clear_button_listener.JPG)
+
 ![function_for_clearing_filters](https://github.com/ejlaflure/UFOs/blob/master/static/images/function_for_clearing_filters.JPG)
